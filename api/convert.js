@@ -16,7 +16,6 @@ Sekarang, ubah prompt ini:`;
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 module.exports = async (req, res) => {
-  // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -30,15 +29,13 @@ module.exports = async (req, res) => {
   }
 
   const { rawPrompt } = req.body;
-
-  // Filter validasi panjang (bagian dari "filter canggih")
   if (!rawPrompt || rawPrompt.trim().length < 2) {
     return res.status(400).json({ error: 'Prompt terlalu pendek atau kosong.' });
   }
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-001",
+      model: "gemini-2.5-flash", // Model gratis yang kuotanya lebih longgar
       systemInstruction: SYSTEM_INSTRUCTION,
     });
 
@@ -48,7 +45,13 @@ module.exports = async (req, res) => {
 
     res.status(200).json({ optimizedPrompt });
   } catch (error) {
-    console.error('Gemini Error:', error);
+    console.error('Gemini Error:', error.message);
+    
+    // Jika error karena quota (429), kasih tahu pengguna
+    if (error.status === 429) {
+      return res.status(429).json({ error: 'Kuota habis. Silakan coba lagi nanti.' });
+    }
+    
     res.status(500).json({ error: 'Gagal memproses prompt. Coba lagi.' });
   }
 };
