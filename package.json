@@ -1,0 +1,9 @@
+{
+  "name": "prompt-optimizer-api",
+  "version": "1.0.0",
+  "description": "API untuk mengubah prompt budget",
+  "main": "api/convert.js",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0"
+  }
+}
