@@ -2,40 +2,27 @@
   "version": 2,
   "functions": {
     "api/convert.js": {
-      "runtime": "nodejs18.x",
       "memory": 256,
       "maxDuration": 25
     },
     "api/health.js": {
-      "runtime": "nodejs18.x",
       "memory": 128,
       "maxDuration": 5
     }
   },
-  "routes": [
-    {
-      "src": "/api/convert",
-      "dest": "/api/convert.js",
-      "methods": ["POST", "OPTIONS"]
-    },
-    {
-      "src": "/api/health",
-      "dest": "/api/health.js",
-      "methods": ["GET", "OPTIONS"]
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/health.js"
-    }
+  "rewrites": [
+    { "source": "/api/convert", "destination": "/api/convert.js" },
+    { "source": "/api/health",  "destination": "/api/health.js"  },
+    { "source": "/(.*)",        "destination": "/api/health.js"  }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "X-Content-Type-Options",    "value": "nosniff" },
+        { "key": "X-Frame-Options",           "value": "DENY" },
+        { "key": "X-XSS-Protection",          "value": "1; mode=block" },
+        { "key": "Referrer-Policy",           "value": "no-referrer" },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
       ]
     }
