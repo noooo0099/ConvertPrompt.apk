@@ -1,9 +1,18 @@
 {
-  "name": "prompt-optimizer-api",
-  "version": "1.0.0",
-  "description": "API untuk mengubah prompt budget",
+  "name": "akhir-prompt-optimizer-api",
+  "version": "2.0.0",
+  "description": "Backend API untuk AKhir — Pengoptimal Prompt AI. Ditenagai Gemini, di-deploy di Vercel.",
   "main": "api/convert.js",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod",
+    "lint": "node --check api/convert.js api/health.js"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.21.0"
-  }
+  },
+  "license": "MIT"
 }
